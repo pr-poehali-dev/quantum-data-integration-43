@@ -2,21 +2,27 @@ import { LiquidButton } from "@/components/ui/liquid-glass-button"
 import Icon from "@/components/ui/icon"
 import { useState } from "react"
 
-export default function HeroSection() {
+interface HeroSectionProps {
+  slide1?: string
+  slide2?: string
+  slide3?: string
+}
+
+export default function HeroSection({ slide1, slide2, slide3 }: HeroSectionProps) {
   const [currentSlide, setCurrentSlide] = useState(0)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const slides = [
     {
-      image: "https://cdn.poehali.dev/projects/4b624ba6-281f-4c6d-9f01-2b06688f6660/files/cce36030-4f37-43d0-a972-0ba0d909dbae.jpg",
+      image: slide1 || "https://cdn.poehali.dev/projects/4b624ba6-281f-4c6d-9f01-2b06688f6660/files/cce36030-4f37-43d0-a972-0ba0d909dbae.jpg",
       alt: "Спарринг в боксёрском зале Никамир",
     },
     {
-      image: "https://cdn.poehali.dev/projects/4b624ba6-281f-4c6d-9f01-2b06688f6660/files/7832caa6-7685-4b62-801f-750660e099ac.jpg",
+      image: slide2 || "https://cdn.poehali.dev/projects/4b624ba6-281f-4c6d-9f01-2b06688f6660/files/7832caa6-7685-4b62-801f-750660e099ac.jpg",
       alt: "Тренировка на мешке в клубе Никамир",
     },
     {
-      image: "https://cdn.poehali.dev/projects/4b624ba6-281f-4c6d-9f01-2b06688f6660/files/7008a70d-944a-4339-a6d9-5e2368fed57e.jpg",
+      image: slide3 || "https://cdn.poehali.dev/projects/4b624ba6-281f-4c6d-9f01-2b06688f6660/files/7008a70d-944a-4339-a6d9-5e2368fed57e.jpg",
       alt: "Тренер и ученик в клубе Никамир",
     },
   ]

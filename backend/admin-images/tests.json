@@ -1,0 +1,20 @@
+{
+  "tests": [
+    {
+      "name": "GET images — public",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 200,
+      "expectedBody": {"hero_slide_1": {"url": "string", "label": "string"}},
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "POST without password — 401",
+      "method": "POST",
+      "path": "/",
+      "body": {"slot": "hero_slide_1", "url": "https://example.com/img.jpg"},
+      "expectedStatus": 401,
+      "bodyMatcher": "partial"
+    }
+  ]
+}

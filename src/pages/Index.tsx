@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react"
 import HeroSection from "@/components/HeroSection"
 import { TextGradientScroll } from "@/components/ui/text-gradient-scroll"
 import { Timeline } from "@/components/ui/timeline"
@@ -5,14 +6,42 @@ import { StaggerTestimonials } from "@/components/ui/stagger-testimonials"
 import { motion } from "framer-motion"
 import SmoothScrollHero from "@/components/ui/smooth-scroll-hero"
 
+const IMAGES_URL = "https://functions.poehali.dev/949d27bb-6532-4e69-8153-36842b4ab8dc"
+
+const DEFAULT_IMAGES = {
+  hero_slide_1: "https://cdn.poehali.dev/projects/4b624ba6-281f-4c6d-9f01-2b06688f6660/files/cce36030-4f37-43d0-a972-0ba0d909dbae.jpg",
+  hero_slide_2: "https://cdn.poehali.dev/projects/4b624ba6-281f-4c6d-9f01-2b06688f6660/files/7832caa6-7685-4b62-801f-750660e099ac.jpg",
+  hero_slide_3: "https://cdn.poehali.dev/projects/4b624ba6-281f-4c6d-9f01-2b06688f6660/files/7008a70d-944a-4339-a6d9-5e2368fed57e.jpg",
+  section_adults: "https://cdn.poehali.dev/projects/4b624ba6-281f-4c6d-9f01-2b06688f6660/files/cce36030-4f37-43d0-a972-0ba0d909dbae.jpg",
+  section_kids: "https://cdn.poehali.dev/projects/4b624ba6-281f-4c6d-9f01-2b06688f6660/files/7832caa6-7685-4b62-801f-750660e099ac.jpg",
+  section_personal: "https://cdn.poehali.dev/projects/4b624ba6-281f-4c6d-9f01-2b06688f6660/files/7008a70d-944a-4339-a6d9-5e2368fed57e.jpg",
+  cta_background: "https://cdn.poehali.dev/projects/4b624ba6-281f-4c6d-9f01-2b06688f6660/files/cce36030-4f37-43d0-a972-0ba0d909dbae.jpg",
+}
+
 export default function Index() {
+  const [imgs, setImgs] = useState(DEFAULT_IMAGES)
+
+  useEffect(() => {
+    fetch(IMAGES_URL)
+      .then((r) => r.json())
+      .then((data) => {
+        setImgs((prev) => ({
+          ...prev,
+          ...Object.fromEntries(
+            Object.entries(data).map(([k, v]) => [k, (v as { url: string }).url])
+          ),
+        }))
+      })
+      .catch(() => {})
+  }, [])
+
   const missionStatement =
     "В клубе «Никамир» мы верим: бокс — это не просто спорт, это характер. Рождённые в сердце Краснодара, мы объединяем детей и взрослых, которых связывает страсть к силе, дисциплине и победе над собой. Тренируешься ли ты ради формы, уверенности или чемпионского пояса — мы здесь, чтобы вести тебя вперёд. Наш зал живёт ритмом ударов, волей к победе и радостью общих достижений. Приходи к нам — боксируй не только ради тела, но ради духа, характера и чистой любви к боксу."
 
   const timelineEntries = [
     {
       id: 1,
-      image: "https://cdn.poehali.dev/projects/4b624ba6-281f-4c6d-9f01-2b06688f6660/files/cce36030-4f37-43d0-a972-0ba0d909dbae.jpg",
+      image: imgs.section_adults,
       alt: "Спарринг в боксёрском зале",
       title: "Секция бокса для взрослых",
       description:
@@ -21,7 +50,7 @@ export default function Index() {
     },
     {
       id: 2,
-      image: "https://cdn.poehali.dev/projects/4b624ba6-281f-4c6d-9f01-2b06688f6660/files/7832caa6-7685-4b62-801f-750660e099ac.jpg",
+      image: imgs.section_kids,
       alt: "Тренировка на боксёрском мешке",
       title: "Детская секция с 5 лет",
       description:
@@ -30,7 +59,7 @@ export default function Index() {
     },
     {
       id: 3,
-      image: "https://cdn.poehali.dev/projects/4b624ba6-281f-4c6d-9f01-2b06688f6660/files/7008a70d-944a-4339-a6d9-5e2368fed57e.jpg",
+      image: imgs.section_personal,
       alt: "Тренер и ученик в зале",
       title: "Индивидуальные тренировки",
       description:
@@ -41,8 +70,11 @@ export default function Index() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Hero Section */}
-      <HeroSection />
+      <HeroSection
+        slide1={imgs.hero_slide_1}
+        slide2={imgs.hero_slide_2}
+        slide3={imgs.hero_slide_3}
+      />
 
       {/* Mission Statement Section */}
       <section id="mission" className="relative min-h-screen flex items-center justify-center py-20 bg-white">
@@ -87,7 +119,7 @@ export default function Index() {
         </div>
       </section>
 
-      {/* График работы */}
+      {/* Контакты */}
       <section className="relative py-16 bg-gray-50">
         <div className="container mx-auto px-6">
           <motion.div
@@ -101,7 +133,6 @@ export default function Index() {
               КОНТАКТЫ И ГРАФИК
             </h2>
             <div className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100">
-              {/* Header */}
               <div className="bg-gray-900 text-white px-6 py-5 flex items-center gap-4">
                 <img
                   src="https://cdn.poehali.dev/files/221aaf0f-dbed-498d-bd8a-455ff43e4111.png"
@@ -115,7 +146,6 @@ export default function Index() {
               </div>
 
               <div className="p-6 space-y-5">
-                {/* Адрес */}
                 <div className="flex items-start gap-4">
                   <div className="w-10 h-10 bg-amber-50 rounded-full flex items-center justify-center shrink-0">
                     <span className="text-amber-600 text-lg">📍</span>
@@ -127,7 +157,6 @@ export default function Index() {
                   </div>
                 </div>
 
-                {/* Телефоны */}
                 <div className="flex items-start gap-4">
                   <div className="w-10 h-10 bg-amber-50 rounded-full flex items-center justify-center shrink-0">
                     <span className="text-amber-600 text-lg">📞</span>
@@ -143,7 +172,6 @@ export default function Index() {
                   </div>
                 </div>
 
-                {/* График */}
                 <div className="flex items-start gap-4">
                   <div className="w-10 h-10 bg-amber-50 rounded-full flex items-center justify-center shrink-0">
                     <span className="text-amber-600 text-lg">🕘</span>
@@ -177,7 +205,7 @@ export default function Index() {
         </div>
       </section>
 
-      {/* Testimonials Section */}
+      {/* Testimonials */}
       <section id="testimonials" className="relative py-20 bg-white">
         <div className="absolute inset-0 bg-grid-subtle opacity-30 pointer-events-none" />
 
@@ -202,12 +230,12 @@ export default function Index() {
         </div>
       </section>
 
-      {/* Final CTA Section */}
+      {/* Final CTA */}
       <section id="join" className="relative">
         <SmoothScrollHero
           scrollHeight={2500}
-          desktopImage="https://cdn.poehali.dev/projects/4b624ba6-281f-4c6d-9f01-2b06688f6660/files/cce36030-4f37-43d0-a972-0ba0d909dbae.jpg"
-          mobileImage="https://cdn.poehali.dev/projects/4b624ba6-281f-4c6d-9f01-2b06688f6660/files/7832caa6-7685-4b62-801f-750660e099ac.jpg"
+          desktopImage={imgs.cta_background}
+          mobileImage={imgs.hero_slide_2}
           initialClipPercentage={30}
           finalClipPercentage={70}
         />
